@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { isEmpty , size } from 'lodash'
 import { FormGroup } from 'reactstrap'
-import shortid from 'shortid'
+import { addDocument, getCollection, updateDocument } from './actions'
 
 
 function App() {
@@ -19,7 +19,19 @@ function App() {
   const [id, setId] = useState("")
   const [error, setError] = useState(null)
 
-    const addPet = (e) =>
+  useEffect(() => 
+  {
+    (async() => 
+    {
+      const result = await getCollection("pets")
+      if (result.statusResponse)
+      {
+        setPets(result.data)
+      }
+    })()
+  }, [])
+
+    const addPet = async(e) =>
     {
       e.preventDefault()
 
@@ -59,20 +71,30 @@ function App() {
           return
         }
         
-        const newPet = 
-        {
-          id: shortid.generate(),
-          petName: petName,
+        const result = await addDocument ("pets", { petName: petName,
           petType: petType,
           petBreed: petBreed,
           petDateBorn: petDateBorn,
           ownerPet: ownerPet,
           ownerPhone: ownerPhone,
           ownerAddress: ownerAddress,
-          ownerEmail: ownerEmail
-        }
+          ownerEmail: ownerEmail })
 
-        setPets([ ...pets, newPet])
+          if( !result.statusResponse )
+          {
+            setError(result.error)
+            return
+          }
+
+        setPets([ ...pets, { id : result.data.id, petName: petName,
+          petType: petType,
+          petBreed: petBreed,
+          petDateBorn: petDateBorn,
+          ownerPet: ownerPet,
+          ownerPhone: ownerPhone,
+          ownerAddress: ownerAddress,
+          ownerEmail: ownerEmail }])
+
         setPetName("")
         setPetType("")
         setPetBreed("")
@@ -81,9 +103,10 @@ function App() {
         setOwnerPhone("")
         setOwnerAddress("")
         setOwnerEmail("")
+        
     }
 
-    const savePet = (e) =>
+    const savePet = async(e) =>
     {
       e.preventDefault()
 
@@ -122,6 +145,21 @@ function App() {
           setError("Debes ingresar la dirección del propietario.")
           return
         }
+        
+        const result = await updateDocument("pets", id, { petName: petName,
+          petType: petType,
+          petBreed: petBreed,
+          petDateBorn: petDateBorn,
+          ownerPet: ownerPet,
+          ownerPhone: ownerPhone,
+          ownerAddress: ownerAddress,
+          ownerEmail: ownerEmail})
+
+          if(!result.statusResponse)
+          {
+            setError(result.error)
+            return
+          }
 
         const editedPets = pets.map(item => item.id === id ? { id, petName: petName,
           petType: petType,
@@ -131,17 +169,19 @@ function App() {
           ownerPhone: ownerPhone,
           ownerAddress: ownerAddress,
           ownerEmail: ownerEmail} : item)
-        setPets(editedPets)
-        setEditMode(false)
-        setPetName("")
-        setPetType("")
-        setPetBreed("")
-        setPetDateBorn("")
-        setOwnerPet("")
-        setOwnerPhone("")
-        setOwnerAddress("")
-        setOwnerEmail("")
-        setId("")
+
+          setPets(editedPets)
+
+          setEditMode(false)
+          setPetName("")
+          setPetType("")
+          setPetBreed("")
+          setPetDateBorn("")
+          setOwnerPet("")
+          setOwnerPhone("")
+          setOwnerAddress("")
+          setOwnerEmail("")
+          setId("")
 
     }
 
@@ -165,11 +205,25 @@ function App() {
       setId(thePet.id)
     }
 
+    const CancelEditMode = () =>
+    {
+      setEditMode(false)
+      setPetName("")
+      setPetType("")
+      setPetBreed("")
+      setPetDateBorn("")
+      setOwnerPet("")
+      setOwnerPhone("")
+      setOwnerAddress("")
+      setOwnerEmail("")
+      setId("")
+    }
+
   return (
     <div className="container mt-5">
       <a href="#VetModal" 
          role="button" 
-         class="btn btn-large btn-primary btn-lg float-right mt-5" 
+         className="btn btn-large btn-primary btn-lg float-right mt-5" 
          data-toggle="modal">
             Inscribir +
       </a>
@@ -178,7 +232,7 @@ function App() {
       <br></br>
       <div className="row">
         <div className="col 12">
-          <table class="table">
+          <table className="table">
             <thead>
               <tr>
                 <th className="text-center">
@@ -213,11 +267,15 @@ function App() {
             </thead>
             <tbody>
               {
-              size(pets) == 0 ? 
+              size(pets) === 0 ? 
               (
-                <td colspan="10" className="text-center">
-                  <li className="list-group-item">No hay mascotas registradas en el sistema.</li>
-                </td>
+                <tr>
+                  <td colSpan="10" className="text-center">
+                    <ul>
+                      <li className="list-group-item">No hay mascotas registradas en el sistema.</li>
+                    </ul>
+                  </td>
+                </tr>
               ):(
               pets.map((pet) => 
               (
@@ -267,28 +325,31 @@ function App() {
           </table>
         </div>
       </div>
-      <div id="VetModal" class="modal fade">
-              <div class="modal-dialog">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                        <h4 class="modal-title">                            
-                            {
-                              error && <span className="text-danger">{error}</span>
-                            }
-                        </h4>
+      <div id="VetModal" className="modal fade">
+              <div className="modal-dialog">
+                  <div className="modal-content">
+                      <div className="modal-header">
+                        <h1 className="modal-title">                            
+                          { editMode ? "Actualicemos!" : "Inscripción" }
+                        </h1>
                           <button type="button" 
-                          class="close" 
+                          className="close" 
                           data-dismiss="modal" 
                           aria-hidden="true">
                             &times;
                           </button>
                       </div>
                       <form onSubmit={ editMode ? savePet : addPet}>
-                        <div class="modal-body">
+                        <div className="modal-body">
+                        <h5 className="text-center my-1">
+                          { editMode ? "Los campos con (*) son requeridos para actualizar el registro" 
+                          : "Los campos con (*) son requeridos para realizar el registro" }
+                        </h5><br></br>
                           <FormGroup>
                             <label>Nombre de la mascota:</label>
                             <input type="text" 
                               className="float-right"
+                              placeholder="*"
                               onChange={(text) => setPetName(text.target.value)}
                               value = {petName}>
                             </input>
@@ -297,6 +358,7 @@ function App() {
                           <label>Tipo de mascota:</label>
                             <input type="text"
                               className="float-right"
+                              placeholder="*"
                               onChange={(text) => setPetType(text.target.value)}
                               value={petType}>
                             </input>
@@ -305,14 +367,16 @@ function App() {
                             <label>Raza de mascota:</label>
                             <input type="text"
                               className="float-right" 
+                              placeholder="*"
                               onChange={(text) => setPetBreed(text.target.value)}
                               value={petBreed}>
                             </input>
                           </FormGroup>
                           <FormGroup>
                             <label>Fecha de nacimiento de la mascota:</label>
-                            <input type="date"
+                            <input type="date and time"
                               className="float-right"
+                              placeholder="* DD/MM/AAAA"
                               onChange={(text) => setPetDateBorn(text.target.value)}
                               value={petDateBorn}>
                             </input>
@@ -322,6 +386,7 @@ function App() {
                             <label>Nombres y apellidos del propietario:</label>
                             <input type="text" 
                               className="float-right"
+                              placeholder="*"
                               onChange={(text) => setOwnerPet(text.target.value)}
                               value={ownerPet}>
                             </input>
@@ -330,6 +395,7 @@ function App() {
                             <label>Teléfono del propietario:</label>
                             <input type="text" 
                               className="float-right"
+                              placeholder="*"
                               onChange={(text) => setOwnerPhone(text.target.value)}
                               value={ownerPhone}>
                             </input>
@@ -338,6 +404,7 @@ function App() {
                             <label>Dirección del propietario:</label>
                             <input type="text" 
                               className="float-right"
+                              placeholder="*"
                               onChange={(text) => setOwnerAddress(text.target.value)}
                               value={ownerAddress}>
                             </input>
@@ -346,18 +413,28 @@ function App() {
                             <label>Email del propietario:</label>
                             <input type="text" 
                               className="float-right"
+                              placeholder="<Campo opcional>"
                               onChange={(text) => setOwnerEmail(text.target.value)}
                               value={ownerEmail}>
                             </input>
                           </FormGroup>
                         </div>
-                        <div class="modal-footer">
+                        <div className="modal-footer">
+                          <div>
+                            <h5 text-align="left">                            
+                                {
+                                error && <span className="text-danger">{error}</span>
+                                }
+                            </h5>
+                          </div>
                             <button type="button" 
-                            class="btn btn-default" 
-                            data-dismiss="modal">
+                            className="btn btn-default" 
+                            data-dismiss="modal"
+                            onClick={() => CancelEditMode()}>
                               Cerrar
                             </button>
-                            <button type="submit" className={ editMode ? "btn btn-success" : "btn btn-primary"}>
+                            <button type="submit" 
+                            className={ editMode ? "btn btn-success" : "btn btn-primary"}>
                               { editMode ? "Modificar" : "Guardar" }
                             </button>
                         </div>
