@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { isEmpty , size } from 'lodash'
 import { FormGroup } from 'reactstrap'
-import { addDocument, getCollection, updateDocument } from './actions'
+import { addDocument, deleteDocument, getCollection, updateDocument } from './actions'
 
 
 function App() {
@@ -182,13 +182,6 @@ function App() {
           setOwnerAddress("")
           setOwnerEmail("")
           setId("")
-
-    }
-
-    const deletePet = (id) =>
-    {
-      const filteredPets = pets.filter(pet => pet.id !== id)
-      setPets(filteredPets)
     }
 
     const editPet = (thePet) =>
@@ -219,6 +212,19 @@ function App() {
       setId("")
     }
 
+    const deletePet = async(id) =>
+    {
+      const result = await deleteDocument("pets", id)
+      if(!result.statusResponse)
+      {
+        setError(result.error)
+        return
+      }
+
+      const filteredPets = pets.filter(pet => pet.id !== id)
+      setPets(filteredPets)
+    }
+
   return (
     <div className="container mt-5">
       <a href="#VetModal" 
@@ -232,8 +238,8 @@ function App() {
       <br></br>
       <div className="row">
         <div className="col 12">
-          <table className="table">
-            <thead>
+          <table className="table table-hover">
+            <thead class="thead-dark">
               <tr>
                 <th className="text-center">
                 <span className="lead"> Nombre de la mascota</span>
@@ -259,9 +265,8 @@ function App() {
                 <th className="text-center">
                 <span className="lead"> Email del propietario</span>
                 </th>
-                <th>
-                </th>
-                <th>
+                <th colSpan="2" className="text-center">
+                <span className="lead "> Acciones</span>
                 </th>
               </tr>
             </thead>
@@ -314,10 +319,13 @@ function App() {
                     </a>
                   </td>
                   <td className="text-center">
-                    <button className="btn btn-danger btn-sm"
-                      onClick={() => deletePet(pet.id)}>
+                    <a href="#VetModalDelete" 
+                      role="button" 
+                      className="btn btn-danger btn-sm" 
+                      data-toggle="modal"
+                      onClick={() => setId(pet.id)}>
                       Eliminar
-                    </button>   
+                    </a>   
                   </td>
                 </tr>
               )))}
@@ -442,9 +450,43 @@ function App() {
                   </div>
               </div>
           </div>
+          <div id="VetModalDelete" className="modal fade">
+              <div className="modal-dialog">
+                  <div className="modal-content">
+                      <div className="modal-header">
+                        <h3 className="modal-title">
+                          Eliminar registro
+                        </h3>
+                        <button type="button" 
+                          className="close" 
+                          data-dismiss="modal" 
+                          aria-hidden="true">
+                            &times;
+                        </button>
+                      </div>
+                        <form>
+                          <div className="modal-body">
+                                  <h4 className="lead text-center">¿Esta seguro que desea eliminar el registro de la mascota?</h4>
+                          </div>
+                          <div className="modal-footer">
+                            <button type="submit"
+                            className="btn btn-danger btn-block"
+                            data-dismiss="modal"
+                            onClick={() => {deletePet((id))}}>
+                              Si
+                            </button>
+                            <button type="button"
+                            data-dismiss="modal"
+                            className="btn btn-default btn-block">
+                              No
+                            </button>
+                          </div>
+                        </form>
+                  </div>
+              </div>                    
+          </div>
     </div>
-    
-    
+
   ) 
 }
 
