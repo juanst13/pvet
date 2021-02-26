@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { isEmpty , size } from 'lodash'
 import { FormGroup } from 'reactstrap'
 import { addDocument, deleteDocument, getCollection, updateDocument } from './actions'
-
+import './App.css' 
 
 function App() {
 
@@ -226,47 +226,81 @@ function App() {
     }
 
   return (
-    <div className="container mt-5">
-      <a href="#VetModal" 
-         role="button" 
-         className="btn btn-large btn-primary btn-lg float-right mt-5" 
-         data-toggle="modal">
-            Inscribir +
-      </a>
-      <h1>Veterinaria vet</h1>
-      <hr/>
-      <br></br>
+    
+    <div className="Doc">
+      <nav class="navbar navbar-expand-lg navbar-info bg-info">
+        <h1 className="text-light my-3">Vet Plus</h1>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        </div>
+        <div className="text-right">
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" 
+                type="search" 
+                placeholder="Search by name of pet" 
+                aria-label="Search"
+                onChange={(text) => setPetName(text.target.value)}
+                value = {petName}>
+                </input>
+              <button class="btn btn-warning my-2 my-sm-0 float-right" 
+                  type="submit">
+                  Search
+              </button>
+            </form>
+          </div>
+      </nav>
       <div className="row">
-        <div className="col 12">
-          <table className="table table-hover">
-            <thead class="thead-dark">
+        <div className="col 10">
+          <table className="table table1">
+            <thead>
               <tr>
-                <th className="text-center">
-                <span className="lead"> Nombre de la mascota</span>
+                <th colSpan="4" className="T1">
+                  <h3>
+                  <p><strong >Mascota</strong></p>
+                  </h3>
                 </th>
-                <th className="text-center">
-                <span className="lead">Tipo de mascota</span>
+                <th colSpan="4" className="T3">
+                  <h3>
+                    <p><strong >Propietario</strong></p>
+                  </h3>
                 </th>
-                <th className="text-center">
-                <span className="lead">Raza de mascota</span>
+                <th colSpan="2" rowSpan="2">
+                  <div className="text-center">
+                    <form>
+                      <a href="#VetModal" 
+                        role="button" 
+                        className="btn btn-success btn-lg my-5"
+                        data-toggle="modal"
+                        text-info>
+                          <strong>Inscribir +</strong>
+                      </a>
+                    </form>
+                  </div>
                 </th>
-                <th className="text-center">
-                <span className="lead">Fecha de nacimiento de la mascota</span>
+              </tr>
+              <tr>
+                <th className="T2">
+                  <h4><b>Nombre</b></h4>
                 </th>
-                <th className="text-center">
-                <span className="lead"> Nombres y apellidos del propietario</span>
+                <th className="T2">
+                  <h4><b>Tipo</b></h4>
                 </th>
-                <th className="text-center">
-                <span className="lead">Teléfono del propietario</span>
+                <th className="T2">
+                  <h4><b>Raza</b></h4>
                 </th>
-                <th className="text-center">
-                <span className="lead"> Dirección del propietario</span>
+                <th className="T2">
+                 <h4><b>Fecha nacimiento</b></h4>
                 </th>
-                <th className="text-center">
-                <span className="lead"> Email del propietario</span>
+                <th className="T2">
+                 <h4><b>Nombre completo</b></h4>
                 </th>
-                <th colSpan="2" className="text-center">
-                <span className="lead "> Acciones</span>
+                <th className="T2">
+                  <h4><b>Telefono</b></h4>
+                </th>
+                <th className="T2">
+                  <h4><b>Dirección</b></h4>
+                </th>
+                <th className="T2">
+                  <h4><b>Email</b></h4>
                 </th>
               </tr>
             </thead>
@@ -277,7 +311,9 @@ function App() {
                 <tr>
                   <td colSpan="10" className="text-center">
                     <ul>
-                      <li className="list-group-item">No hay mascotas registradas en el sistema.</li>
+                      <li className="list-group-item">
+                        No hay mascotas registradas en el sistema.
+                      </li>
                     </ul>
                   </td>
                 </tr>
@@ -285,31 +321,31 @@ function App() {
               pets.map((pet) => 
               (
                 <tr key={pet.id}>
-                  <td className="text-center">
-                    <span>{pet.petName}</span>
+                  <td className="text-center" bgcolor="#FFFFFF">
+                    <p><em><span>{pet.petName}</span></em></p>
                   </td>
-                  <td className="text-center">
-                    <span>{pet.petType}</span>
+                  <td className="text-center" bgcolor="#FFFFFF">
+                  <p><em><span>{pet.petType}</span></em></p>
                   </td>
-                  <td className="text-center">
-                    <span>{pet.petBreed}</span>
+                  <td className="text-center" bgcolor="#FFFFFF">
+                  <p><em><span>{pet.petBreed}</span></em></p>
                   </td>
-                  <td className="text-center">
-                    <span>{pet.petDateBorn}</span>
+                  <td className="text-center" bgcolor="#FFFFFF">
+                  <p><em><span>{pet.petDateBorn}</span></em></p>
                   </td>
-                  <td className="text-center">
-                    <span>{pet.ownerPet}</span>
+                  <td className="text-center" bgcolor="#FFFFFF">
+                  <p><em><span>{pet.ownerPet}</span></em></p>
                   </td>
-                  <td className="text-center">
-                    <span>{pet.ownerPhone}</span>
+                  <td className="text-center" bgcolor="#FFFFFF">
+                  <p><em><span>{pet.ownerPhone}</span></em></p>
                   </td>
-                  <td className="text-center">
-                    <span>{pet.ownerAddress}</span>
+                  <td className="text-center" bgcolor="#FFFFFF">
+                  <p><em><span>{pet.ownerAddress}</span></em></p>
                   </td>
-                  <td className="text-center">
-                    <span>{pet.ownerEmail}</span>
+                  <td className="text-center" bgcolor="#FFFFFF">
+                  <p><em><span>{pet.ownerEmail}</span></em></p>
                   </td>
-                  <td className="text-center">
+                  <td className="text-center" bgcolor="#FFFFFF">
                     <a href="#VetModal" 
                       role="button" 
                       className="btn btn-warning btn-sm" 
@@ -336,25 +372,26 @@ function App() {
       <div id="VetModal" className="modal fade">
               <div className="modal-dialog">
                   <div className="modal-content">
-                      <div className="modal-header">
-                        <h1 className="modal-title">                            
-                          { editMode ? "Actualicemos!" : "Inscripción" }
-                        </h1>
+                      <div className={ editMode? "modal-header bg-warning" : "modal-header bg-primary"}> 
+                        <h2 className={ editMode? "modal-title text-light" : "modal-title text-light"}> 
+                          <em><p>                         
+                           { editMode ? "Actualicemos!" : "Vamos a inscribirlo!" }
+                          </p></em>
+                        </h2>
                           <button type="button" 
                           className="close" 
                           data-dismiss="modal" 
-                          aria-hidden="true">
+                          aria-hidden="true"
+                          onClick={() => CancelEditMode()}>
                             &times;
                           </button>
                       </div>
                       <form onSubmit={ editMode ? savePet : addPet}>
                         <div className="modal-body">
-                        <h5 className="text-center my-1">
-                          { editMode ? "Los campos con (*) son requeridos para actualizar el registro" 
-                          : "Los campos con (*) son requeridos para realizar el registro" }
-                        </h5><br></br>
+                            <h4 className="text-center my-1">Mascota</h4>
+                            <p></p>
                           <FormGroup>
-                            <label>Nombre de la mascota:</label>
+                            <label>Nombre:</label>
                             <input type="text" 
                               className="float-right"
                               placeholder="*"
@@ -363,16 +400,16 @@ function App() {
                             </input>
                           </FormGroup>
                           <FormGroup>
-                          <label>Tipo de mascota:</label>
+                          <label>Tipo:</label>
                             <input type="text"
                               className="float-right"
-                              placeholder="*"
+                              placeholder="* Dog - Cat - Rabbit..."
                               onChange={(text) => setPetType(text.target.value)}
                               value={petType}>
                             </input>
                           </FormGroup>
                           <FormGroup>
-                            <label>Raza de mascota:</label>
+                            <label>Raza:</label>
                             <input type="text"
                               className="float-right" 
                               placeholder="*"
@@ -381,7 +418,7 @@ function App() {
                             </input>
                           </FormGroup>
                           <FormGroup>
-                            <label>Fecha de nacimiento de la mascota:</label>
+                            <label>Fecha de nacimiento:</label>
                             <input type="date and time"
                               className="float-right"
                               placeholder="* DD/MM/AAAA"
@@ -389,9 +426,10 @@ function App() {
                               value={petDateBorn}>
                             </input>
                           </FormGroup>
+                          <hr></hr>
+                            <h4 className="text-center">Propietario</h4>
                           <FormGroup>
-                            <hr></hr>
-                            <label>Nombres y apellidos del propietario:</label>
+                            <label>Nombres completo:</label>
                             <input type="text" 
                               className="float-right"
                               placeholder="*"
@@ -400,7 +438,7 @@ function App() {
                             </input>
                           </FormGroup>
                           <FormGroup>
-                            <label>Teléfono del propietario:</label>
+                            <label>Teléfono:</label>
                             <input type="text" 
                               className="float-right"
                               placeholder="*"
@@ -409,7 +447,7 @@ function App() {
                             </input>
                           </FormGroup>
                           <FormGroup>
-                            <label>Dirección del propietario:</label>
+                            <label>Dirección:</label>
                             <input type="text" 
                               className="float-right"
                               placeholder="*"
@@ -418,7 +456,7 @@ function App() {
                             </input>
                           </FormGroup>
                           <FormGroup>
-                            <label>Email del propietario:</label>
+                            <label>Email:</label>
                             <input type="text" 
                               className="float-right"
                               placeholder="<Campo opcional>"
@@ -426,6 +464,10 @@ function App() {
                               value={ownerEmail}>
                             </input>
                           </FormGroup>
+                          <h5 className="text-center my-1">
+                          { editMode ? "Los campos con (*) son requeridos para actualizar el registro" 
+                          : "Los campos con (*) son requeridos para realizar el registro" }
+                        </h5>
                         </div>
                         <div className="modal-footer">
                           <div>
@@ -442,7 +484,7 @@ function App() {
                               Cerrar
                             </button>
                             <button type="submit" 
-                            className={ editMode ? "btn btn-success" : "btn btn-primary"}>
+                            className={ editMode ? "btn btn-dark" : "btn btn-success"}>
                               { editMode ? "Modificar" : "Guardar" }
                             </button>
                         </div>
@@ -450,12 +492,12 @@ function App() {
                   </div>
               </div>
           </div>
-          <div id="VetModalDelete" className="modal fade">
+          <div id="VetModalDelete" className="modal fadet">
               <div className="modal-dialog">
                   <div className="modal-content">
-                      <div className="modal-header">
-                        <h3 className="modal-title">
-                          Eliminar registro
+                      <div className="modal-header bg-dark">
+                        <h3 className="modal-title text-light">
+                          <em><p> Eliminar registro </p></em>
                         </h3>
                         <button type="button" 
                           className="close" 
@@ -466,7 +508,9 @@ function App() {
                       </div>
                         <form>
                           <div className="modal-body">
-                                  <h4 className="lead text-center">¿Esta seguro que desea eliminar el registro de la mascota?</h4>
+                                  <h4 className="lead text-center">
+                                    ¿Esta seguro que desea eliminar el registro de la mascota?
+                                  </h4>
                           </div>
                           <div className="modal-footer">
                             <button type="submit"
@@ -486,6 +530,7 @@ function App() {
               </div>                    
           </div>
     </div>
+    
 
   ) 
 }

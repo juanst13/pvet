@@ -1,53 +1,41 @@
-.modalDialog {
-	position: fixed;
-	font-family: Arial, Helvetica, sans-serif;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	background: rgba(0,0,0,0.8);
-	z-index: 99999;
-	display:none;
-	-webkit-transition: opacity 400ms ease-in;
-	-moz-transition: opacity 400ms ease-in;
-	transition: opacity 400ms ease-in;
-	pointer-events: auto;
-}
-.modalDialog > div {
-	width: 400px;
-	position: relative;
-	margin: 10% auto;
-	padding: 5px 20px 13px 20px;
-	border-radius: 10px;
-	background: #fff;
-	background: -moz-linear-gradient(#fff, #999);
-	background: -webkit-linear-gradient(#fff, #999);
-	background: -o-linear-gradient(#fff, #999);
-  -webkit-transition: opacity 400ms ease-in;
--moz-transition: opacity 400ms ease-in;
-transition: opacity 400ms ease-in;
-}
-.close {
-	background: #606061;
-	color: #FFFFFF;
-	line-height: 25px;
-	position: absolute;
-	right: -12px;
-	text-align: center;
-	top: -10px;
-	width: 24px;
-	text-decoration: none;
-	font-weight: bold;
-	-webkit-border-radius: 12px;
-	-moz-border-radius: 12px;
-	border-radius: 12px;
-	-moz-box-shadow: 1px 1px 3px #000;
-	-webkit-box-shadow: 1px 1px 3px #000;
-	box-shadow: 1px 1px 3px #000;
-}
-.close:hover { background: #00d9ff; }
+   .Doc 
+   {
+    background-color:rgba(255, 255, 255, 0,5);
+    background-image: url("./Images/BG - P.jpg");
+    width: 10;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-x: hidden;
+    opacity: 1;
+    filter: alpha(opacity=80);
+    zoom:1;
 
-.linea
-{
-    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+.T1{
+      text-align: center;
+      background-color: rgb(255, 255, 255);
+  }
+
+.T2{
+    text-align: center;
+    background-color:  rgb(255, 255, 255);
+    
+}
+.T3{
+    text-align: center;
+    background-color:  rgb(210, 232, 245);   
+}
+.table{
+    padding: 0;
+    border-spacing: 0;
+    opacity: 0.8;
+}
+
+.BTN1{
+    width: 400px;
+    display: flex;
+    justify-content: center;
 }
