@@ -1,13 +1,16 @@
-import firebase from "firebase/app"
-import "firebase/firestore"
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 
   const firebaseConfig = {
-    apiKey: "AIzaSyDNsVIY3c4Kx1I4G7d5ZPLNWT-sZm7apJk",
-    authDomain: "vpet-c69ec.firebaseapp.com",
-    projectId: "vpet-c69ec",
-    storageBucket: "vpet-c69ec.appspot.com",
-    messagingSenderId: "426036699736",
-    appId: "1:426036699736:web:07e89226f21eee73da602d"
+    apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID,
+    appId: process.env.REACT_APP_FIREBASE_APPID
   }
 
-export const firebaseApp = firebase.initializeApp(firebaseConfig)
+  const firebaseApp = initializeApp(firebaseConfig)
+  const db = getFirestore(firebaseApp)
+  
+  export default db
